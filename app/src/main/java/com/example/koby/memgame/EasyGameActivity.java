@@ -1,15 +1,29 @@
 package com.example.koby.memgame;
 
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.Locale;
 import java.util.Random;
 
 public class EasyGameActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private static final long START_TIME_IN_MILLIS = 30000;
+    private TextView timer_view;
+    private CountDownTimer countDownTimer;
+    private boolean isTimeRunning;
+    private long timeLeftInMillis = START_TIME_IN_MILLIS;
+
+    private int counter = 0;
+
+    private TextView textName;
 
     private int numberOfElements;
 
@@ -28,6 +42,14 @@ public class EasyGameActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_easy_game);
 
+        timer_view = findViewById(R.id.easy_timer);
+        startTimer();
+
+        updateCountDownText();
+
+        textName = findViewById(R.id.textViewName);
+        textName.setText(getIntent().getStringExtra("outputNameEasy"));
+
         GridLayout gridLayout = findViewById(R.id.grid_layout_easy);
 
         int numColumns = gridLayout.getColumnCount();
@@ -45,8 +67,7 @@ public class EasyGameActivity extends AppCompatActivity implements View.OnClickL
         buttonGraphics[3] = R.drawable.pic_4;
         buttonGraphics[4] = R.drawable.pic_5;
         buttonGraphics[5] = R.drawable.pic_6;
-        buttonGraphics[6] = R.drawable.pic_7;
-        buttonGraphics[7] = R.drawable.pic_8;
+
 
 
         buttonGraphicLocations = new int[numberOfElements];
@@ -67,6 +88,38 @@ public class EasyGameActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    protected void startTimer()
+    {
+        countDownTimer = new CountDownTimer(timeLeftInMillis,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMillis = l;
+                updateCountDownText();
+            }
+
+            @Override
+            public void onFinish() {
+                isTimeRunning = false;
+                Toast.makeText(EasyGameActivity.this,"TIME'S UP! START AGAIN!",Toast.LENGTH_LONG).show();
+                finish();
+
+            }
+        }.start();
+
+        isTimeRunning = true;
+    }
+
+    protected void updateCountDownText()
+    {
+        int minutes = (int)(timeLeftInMillis/1000) / 60;
+        int seconds = (int)(timeLeftInMillis/1000) % 60;
+
+        String timeLeftFormatted = String.format(Locale.getDefault(),"%02d:%02d", minutes,seconds);
+
+        timer_view.setText(timeLeftFormatted);
+
+    }
+
     protected void shuffleButtonGraphics()
     {
         Random rand = new Random();
@@ -80,7 +133,7 @@ public class EasyGameActivity extends AppCompatActivity implements View.OnClickL
         {
             int temp = buttonGraphicLocations[i];
 
-            int swapIndex = rand.nextInt(16);
+            int swapIndex = rand.nextInt(12);
 
             buttonGraphicLocations[i] = buttonGraphicLocations[swapIndex];
 
@@ -114,16 +167,21 @@ public class EasyGameActivity extends AppCompatActivity implements View.OnClickL
 
         if(selectedButton1.getFrontDrawableID() == button.getFrontDrawableID())
         {
+            this.counter++;
+
             button.flip();
 
             button.setMatched(true);
 
             selectedButton1.setMatched(true);
 
-            //selectedButton1.setEnabled(false);
-            //selectedButton2.setEnabled(false);
-
             selectedButton1 = null;
+
+            if(counter==6)
+            {
+                Toast.makeText(this,"YOU WON!!",Toast.LENGTH_LONG).show();
+                finish();
+            }
 
             return;
         }
@@ -144,7 +202,7 @@ public class EasyGameActivity extends AppCompatActivity implements View.OnClickL
                     selectedButton2 = null;
                     isBusy = false;
                 }
-            }, 500);
+            }, 1000);
         }
     }
 }

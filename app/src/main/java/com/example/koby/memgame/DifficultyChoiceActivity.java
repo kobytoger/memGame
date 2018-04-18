@@ -11,6 +11,8 @@ public class DifficultyChoiceActivity extends AppCompatActivity {
 
 
     private TextView textName;
+    private TextView textAge;
+
 
     private Button buttonEasy;
     private Button buttonMedium;
@@ -27,12 +29,14 @@ public class DifficultyChoiceActivity extends AppCompatActivity {
 
         textName = findViewById(R.id.welcomedNameText);
         textName.setText(getIntent().getStringExtra("outputName"));
-
+        textAge = findViewById(R.id.welcomedAgeText);
+        textAge.setText(getIntent().getStringExtra("outputAge"));
 
         buttonEasy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DifficultyChoiceActivity.this,EasyGameActivity.class);
+                intent.putExtra("outputNameEasy",getIntent().getStringExtra("outputName"));
                 startActivity(intent);
             }
         });
@@ -41,6 +45,7 @@ public class DifficultyChoiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DifficultyChoiceActivity.this,MediumGameActivity.class);
+                intent.putExtra("outputNameMedium",getIntent().getStringExtra("outputName"));
                 startActivity(intent);
             }
         });
@@ -49,6 +54,7 @@ public class DifficultyChoiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DifficultyChoiceActivity.this,HardGameActivity.class);
+                intent.putExtra("outputNameHard",getIntent().getStringExtra("outputName"));
                 startActivity(intent);
             }
         });
