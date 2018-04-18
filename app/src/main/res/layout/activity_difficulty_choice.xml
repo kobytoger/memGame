@@ -37,7 +37,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="151dp"
             android:layout_height="wrap_content"
             android:text="Welcome"
             android:textSize="30dp"
@@ -50,16 +50,25 @@
             android:id="@+id/welcomedNameText"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="5dp"
             android:text=""
+            android:textAlignment="center"
             android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/welcomedAgeText"
+            android:layout_width="103dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="50dp"
+            android:textAlignment="center"
+            android:text="" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="177dp"
             android:layout_height="41dp"
             android:text="Choose difficulty:"
-            android:textSize="20dp" />
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/button_easy"
